@@ -7,7 +7,7 @@ This repository hosts source code for a websocket based client interface for EBA
 `npm install https://github.com/ibm-watson-embedded-business-assistant/eba-node-client`
 
 ### Usage
-For a full usage example of the client, check out of our [console application sample](https://github.com/ibm-watson-embedded-business-assistant/eba-example-agents/blob/master/samples/websocket-node-client/app.js)
+For a full usage example of the client, check out of our [console application](https://github.com/ibm-watson-embedded-business-assistant/eba-example-agents/blob/master/samples/websocket-node-client/app.js)
 
 ```
 // require and construct
