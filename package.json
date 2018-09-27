@@ -1,5 +1,5 @@
 {
-  "name": "eba-node-client",
+  "name": "eba-client",
   "version": "1.0.0",
   "description": "",
   "main": "eba-client.js",

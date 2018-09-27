@@ -1,4 +1,4 @@
-## EBA Node Client
+## EBA Client
 
 This repository hosts source code for a websocket based client interface for EBA written in Node.js. For documentation on how to connect to EBA in headless mode please follow [these instructions](). For more information on EBA itself, please visit our home: https://eba.ai.
 
