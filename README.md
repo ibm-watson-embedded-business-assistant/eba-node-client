@@ -11,7 +11,7 @@ For a full usage example of the client, check out of our [console application](h
 
 ```
 // require and construct
-const eba = require('eba-node-client')
+const eba = require('eba-client')
 const client = new eba.Client(settings.url)
 
 // listen for messages
