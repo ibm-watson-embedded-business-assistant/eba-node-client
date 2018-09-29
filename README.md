@@ -21,7 +21,7 @@ client.on('message', (message) => {
 
 // listen for logs
 client.on('log', (text) => {
-    console.log(chalk.cyan(text))
+    console.log(text)
 })
 
 // example interaction logic
@@ -40,8 +40,8 @@ client
         interact()
     })
     .catch((ex) => {
-        console.error(chalk.red('unable to connect:'))
-        console.error(chalk.red(`${ex}`))
+        console.error('unable to connect:')
+        console.error(`${ex}`)
         process.exit(1)
     })
 ```
