@@ -73,6 +73,11 @@ class Client extends EventEmitter {
         }
     }
 
+    _keepAlive() {
+        if (this.socket && !this.stopped)
+            this.socket.send(JSON.stringify({name:'ping'}))
+    }
+
     async _handleMessages(messages) {
         for (let message of messages) {
 
@@ -118,6 +123,8 @@ class Client extends EventEmitter {
                 null,
                 { maxReceivedFrameSize: 1024*1014*10 })
 
+            this.keepAliveTimer = setInterval(this._keepAlive.bind(this), 10000)
+
             this.socket.onopen = connection => {
                 this.connected = true
                 this._log("websocket opened")
@@ -128,7 +135,7 @@ class Client extends EventEmitter {
                 this.connected = false
                 this._log(`websocket closed: ${reason}`)
                 if (!this.stopped)
-                    this.timer = setTimeout(() => this._connect().catch(() => {}), 10000)
+                    this.reconnectTimer = setTimeout(() => this._connect().catch(() => {}), 10000)
             }
 
             this.socket.onerror = (socket) => {
@@ -173,8 +180,10 @@ class Client extends EventEmitter {
     stop() {
         this._log('logging out...')
         this.stopped = true
-        if (this.timer)
-            clearTimeout(this.timer)
+        if (this.reconnectTimer)
+            clearTimeout(this.reconnectTimer)
+        if (this.keepAliveTimer)
+            clearInterval(this.keepAliveTimer)
         if (this.request)
             this.request.abort()
         if (this.socket)
