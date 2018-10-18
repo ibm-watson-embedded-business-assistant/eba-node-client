@@ -45,10 +45,7 @@ class Client extends EventEmitter {
             return this.api.get({
                 uri: 'data/query',
                 qs: { query: JSON.stringify(data) },
-                headers: {
-                    referer: this.url,
-                    'x-cca-sessionid': this.sessionId
-                }
+                headers: { 'x-cca-sessionid': this.session }
             })
         } else {
             return data
