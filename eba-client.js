@@ -42,9 +42,9 @@ class Client extends EventEmitter {
 
     _force(data) {
         if (_.isObject(data) && data.kind == 'genericLazyData') {
-            return this.api.get({
-                uri: 'data/query',
-                qs: { query: JSON.stringify(data) },
+            return this.api.post({
+                uri: 'api/v0/force',
+                body: data,
                 headers: { 'x-cca-sessionid': this.session }
             })
         } else {
