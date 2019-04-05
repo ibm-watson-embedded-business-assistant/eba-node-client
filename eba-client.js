@@ -16,12 +16,7 @@ class Client extends EventEmitter {
             jar: this.jar,
             json: true,
             baseUrl: url,
-            headers: { referer: url },
-            // debugging...
-            // transform: (body, response, resolveWithFullResponse) => {
-            //     console.log(response.headers)
-            //     return body
-            // }
+            headers: { referer: url }
         })
         this.started = false
         this.stopped = false
@@ -40,18 +35,6 @@ class Client extends EventEmitter {
         this.emit('log', text)
     }
 
-    _force(data) {
-        if (_.isObject(data) && data.kind == 'genericLazyData') {
-            return this.api.post({
-                uri: 'api/v0/force',
-                body: data,
-                headers: { 'x-cca-sessionid': this.session }
-            })
-        } else {
-            return data
-        }
-    }
-
     async _handleNode(node) {
         if (this._isMessage(node)) {
             let content = node.data.content
@@ -65,7 +48,7 @@ class Client extends EventEmitter {
                 if (!_.isNil(content.text))
                     message.text = content.text
                 if (!_.isNil(content.data))
-                    message.data = await this._force(content.data)
+                    message.data = await this.force(content.data)
                 if (!_.isNil(content.name))
                     message.name = content.name
                 this.emit('message', message)
@@ -199,6 +182,38 @@ class Client extends EventEmitter {
         }
         catch (error) {
             this._log(`send failed: ${error}`)
+        }
+    }
+
+    try(question) {
+        return this.api.post({
+            uri: 'api/v0/try',
+            body: {question},
+            json: true,
+            headers: { 'x-cca-sessionid': this.session }
+        })
+    }
+
+    run(questions) {
+        if (_.isString(questions))
+            questions = [questions]
+        return this.api.post({
+            uri: 'api/v0/run',
+            body: {questions},
+            json: true,
+            headers: { 'x-cca-sessionid': this.session }
+        })
+    }
+
+    force(data) {
+        if (_.isObject(data) && data.kind == 'genericLazyData') {
+            return this.api.post({
+                uri: 'api/v0/force',
+                body: data,
+                headers: { 'x-cca-sessionid': this.session }
+            })
+        } else {
+            return data
         }
     }
 }
